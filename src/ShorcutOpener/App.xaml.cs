@@ -61,9 +61,6 @@ namespace ShorcutOpener
             services.AddTransient<IShellWindow, ShellWindow>();
             services.AddTransient<ShellViewModel>();
 
-            services.AddTransient<LauncherPage>();
-            services.AddTransient<LauncherViewModel>();
-
             // Configuration
             services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
         }

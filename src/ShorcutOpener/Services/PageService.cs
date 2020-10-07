@@ -5,8 +5,6 @@ using System.Windows.Controls;
 
 using ShorcutOpener.Contracts.Services;
 using ShorcutOpener.Helpers;
-using ShorcutOpener.ViewModels;
-using ShorcutOpener.Views;
 
 namespace ShorcutOpener.Services
 {
@@ -18,7 +16,6 @@ namespace ShorcutOpener.Services
         public PageService(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
-            Configure<LauncherViewModel, LauncherPage>();
         }
 
         public Type GetPageType(string key)

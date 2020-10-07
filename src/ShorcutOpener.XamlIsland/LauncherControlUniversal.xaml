@@ -10,6 +10,6 @@
     d:DesignWidth="720">
 
     <Grid>
-        <TextBox PlaceholderText="Start typing..." FontSize="24" />
+        <TextBox PlaceholderText="Start typing..." FontSize="24" Text="{x:Bind Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </UserControl>

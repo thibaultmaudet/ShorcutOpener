@@ -1,46 +1,61 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Windows.Input;
-
-using ShorcutOpener.Contracts.Services;
+using Dev2Be.Toolkit;
+using ShorcutOpener.Core.Models;
+using ShorcutOpener.Core.Services;
 using ShorcutOpener.Helpers;
 
 namespace ShorcutOpener.ViewModels
 {
     public class ShellViewModel : Observable
     {
-        private readonly INavigationService _navigationService;
-        private RelayCommand _goBackCommand;
-        private RelayCommand _loadedCommand;
-        private RelayCommand _unloadedCommand;
+        private string text;
 
-        public RelayCommand GoBackCommand => _goBackCommand ?? (_goBackCommand = new RelayCommand(OnGoBack, CanGoBack));
+        private List<Shorcut> shorcuts;
 
-        public ICommand LoadedCommand => _loadedCommand ?? (_loadedCommand = new RelayCommand(OnLoaded));
+        public ICommand IgnoreCommand { get; set; }
 
-        public ICommand UnloadedCommand => _unloadedCommand ?? (_unloadedCommand = new RelayCommand(OnUnloaded));
-
-        public ShellViewModel(INavigationService navigationService)
+        public ICommand EscapeCommand { get; set; }
+        public ICommand ValidateCommand { get; set; }
+        
+        public string Text
         {
-            _navigationService = navigationService;
+            get { return text; }
+            set { Set(ref text, value); }
         }
 
-        private void OnLoaded()
+        public ShellViewModel()
         {
-            _navigationService.Navigated += OnNavigated;
+            InitializeKeyCommands();
+
+            AssemblyInformations assemblyInformations = new AssemblyInformations(Assembly.GetExecutingAssembly().GetName().Name);
+
+            shorcuts = new FileService().Read<List<Shorcut>>(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), assemblyInformations.Company, assemblyInformations.Product), "ShorcutOpener.Shorcuts.json");
         }
 
-        private void OnUnloaded()
+        private void InitializeKeyCommands()
         {
-            _navigationService.Navigated -= OnNavigated;
+            IgnoreCommand = new RelayCommand<object>(_ => { });
+
+            EscapeCommand = new RelayCommand<object>(_ =>
+            {
+                
+            });
+
+            ValidateCommand = new RelayCommand<object>(_ =>
+            {
+                if (text.Length > 0 && shorcuts.Count > 0)
+                {
+                    Shorcut shorcut = shorcuts.Find(x => x.Text.Equals(text, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (shorcut != null)
+                        Process.Start(new ProcessStartInfo(shorcut.Process) { UseShellExecute = true, Arguments = shorcut.Argument });
+                }
+            });
         }
-
-        private bool CanGoBack()
-            => _navigationService.CanGoBack;
-
-        private void OnGoBack()
-            => _navigationService.GoBack();
-
-        private void OnNavigated(object sender, string viewModelName)
-            => GoBackCommand.OnCanExecuteChanged();
     }
 }

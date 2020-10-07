@@ -62,9 +62,7 @@ namespace ShorcutOpener.Services
             {
                 // Default activation that navigates to the apps default page
                 shellWindow = serviceProvider.GetService(typeof(IShellWindow)) as IShellWindow;
-                navigationService.Initialize(shellWindow.GetNavigationFrame());
                 shellWindow.ShowWindow();
-                navigationService.NavigateTo(typeof(LauncherViewModel).FullName);
                 await Task.CompletedTask;
             }
         }
