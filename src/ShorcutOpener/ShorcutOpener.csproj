@@ -8,8 +8,8 @@
     <StartupObject>ShorcutOpener.Program</StartupObject>
     <AssetTargetFallback>uap10.0.18362</AssetTargetFallback>
     <Platforms>x64;x86</Platforms>
-    <AssemblyVersion>0.1.0.70</AssemblyVersion>
-    <FileVersion>0.1.0.70</FileVersion>
+    <AssemblyVersion>0.1.0.75</AssemblyVersion>
+    <FileVersion>0.1.0.75</FileVersion>
     <Authors>Thibault MAUDET</Authors>
     <Company>Dev2Be</Company>
     <PackageProjectUrl>https://github.com/thibaultmaudet/ShorcutOpener</PackageProjectUrl>
